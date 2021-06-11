@@ -13,13 +13,6 @@ shopware 5 shop (with some plugin?). Pretty specific use case.
 Mirasvit stores the points in transactions, and the sums are not stored in db,
 afaics.
 
-Relevant db table is mst_rewards_transaction:
-
-`"SELECT SUM(amount) FROM $table WHERE customer_id=?", [(int)$customer]`
-
-`"SELECT customer_id, SUM(amount) as amount FROM $table GROUP BY customer_id"`
-
-
 ## Plan of action
 
   * Map customer ids to reward points
