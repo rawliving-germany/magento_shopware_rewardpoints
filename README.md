@@ -6,7 +6,7 @@ SPDX-License-Identifier: AGPL-3.0-or-later
 
 Scripts to migrate bonus points from a magento 2.x shop (from mirasvit rewards
 plugin) to a
-shopware 5 shop (with some plugin?). Pretty specific use case.
+shopware 5.x shop (with some plugin?). Pretty specific use case.
 
 ## DB
 
