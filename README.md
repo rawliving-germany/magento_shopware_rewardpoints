@@ -16,8 +16,19 @@ afaics.
 ## Plan of action
 
   * Map customer ids to reward points
+  * Find customer email-adresses
+  * From the magento db dump 'email-adress -> reward point'
+  * In shopware find user with given email-adress
+  * Add bonus point for given user.
 
 ## Usage
+
+run `magento_shopware_rewardpoints --help`
+
+It is assumed that magento and shopware share the same database server.
+
+
+## Knowledgebase
 
 ## License
 
