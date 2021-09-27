@@ -27,6 +27,23 @@ run `magento_shopware_rewardpoints --help`
 
 It is assumed that magento and shopware share the same database server.
 
+Output is a json file `{[email: points, email2: points2]}`.
+
+This data can then be consumed with `shopware_bonuspoints.rb`
+
+```bash
+# Print json of mail-> points of magento users
+./magento_rewardpoints.rb -u mysqluser -p mysqlpassword -d magentodb
+
+# Save to file
+./magento_rewardpoints.rb -u mysqluser -p mysqlpassword -d magentodb > magento.json
+
+# Import (no safety-net!)
+./shopware_bonuspoints.rb -u mysqluser -p mysqlpassword -d shopwaredb magento.json
+
+# Or, pipe it
+./magento_rewardpoints.rb -d magentodb | ./shopware_bonuspoints.rb -d shopwaredb
+```
 
 ## Knowledgebase
 

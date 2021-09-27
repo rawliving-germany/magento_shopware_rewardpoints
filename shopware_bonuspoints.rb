@@ -60,3 +60,22 @@ else
   exit 1
 end
 
+json_content = JSON.parse(ARGF.read)
+mail_to_points = json_content
+
+# Forget about those without points
+mail_to_points.delete_if {|m,p| p.to_i == 0}
+
+sql_mail_in = mail_to_points.keys.
+  map{|m| "\"#{m}\"" }.
+  join(",")
+
+query = <<~SQL
+  SELECT email, id FROM s_user WHERE email IN (#{sql_mail_in})
+SQL
+
+mail_user_id = mysql_client.query(query, symbolize_keys: true)
+  .map { |row| [] }.to_h
+
+# Exit gracefully
+exit 0
