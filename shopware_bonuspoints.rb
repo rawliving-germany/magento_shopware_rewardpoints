@@ -75,7 +75,41 @@ query = <<~SQL
 SQL
 
 mail_user_id = mysql_client.query(query, symbolize_keys: true)
-  .map { |row| [] }.to_h
+  .map { |row| [row[:email], row[:id]] }.to_h
+
+mail_user_id.each do |mail,id|
+  query = <<~SQL
+    SELECT points FROM s_core_plugins_bonus_user_points WHERE userID = #{id}
+  SQL
+
+  points = (mail_to_points[mail.to_sym].to_i / 2.0).ceil
+
+  # Update points if possible (already)
+  if mysql_client.query(query).count == 1
+    query = <<~SQL
+      UPDATE s_core_plugins_bonus_user_points
+        SET points = #{ points }
+        WHERE userID = #{id}
+    SQL
+    # /* email: #{mail} */
+  else
+    query = <<~SQL
+      INSERT INTO s_core_plugins_bonus_user_points (userID, points) VALUES (#{id}, #{ points })
+    SQL
+      #/* email: #{mail} */
+  end
+
+  mysql_client.query(query)
+
+  query = <<~SQL
+    INSERT INTO s_core_plugins_bonus_user_points_reasons
+      (userID, difference, type, context, time) VALUES
+      (#{id},  #{ points }, 'admin', "Übernahme aus altem Shop", curdate())
+  SQL
+      #/* email: #{mail} */
+
+  mysql_client.query(query)
+end
 
 # Exit gracefully
 exit 0
